@@ -14,5 +14,10 @@ public class NasaFacadeStateless {
     @PersistenceContext(unitName = "example")
     private EntityManager em;
 
+    public <E> E create(E e){
+        em.persist(e);
+        return e;
+    }
+
 
 }
