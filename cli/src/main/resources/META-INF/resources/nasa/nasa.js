@@ -17,5 +17,8 @@ angular.module("nasa", ["ngResource"])
     .controller("homeController", ["$scope", "$log", "$resource", "$interval", function($scope, $log, $resource, $interval){
         "use strict";
         $log.log("home controller");
+        var resource = $resource("http://localhost:8080/test-web-1.1/api/",{},{"get": { "url": "mission-names", "isArray" : true }});
+        $scope.missionNames = resource.get();
+
     }])
 ;
