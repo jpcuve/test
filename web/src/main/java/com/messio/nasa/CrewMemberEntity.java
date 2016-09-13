@@ -1,5 +1,6 @@
 package com.messio.nasa;
 
+import javax.inject.Named;
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,8 +10,12 @@ import java.util.List;
 @Entity
 @Table(name = "crew_member", uniqueConstraints = {@UniqueConstraint(columnNames = {"member_name"})})
 @NamedQueries({
+        @NamedQuery(name = CrewMemberEntity.CREW_MEMBER_BY_NAME, query = "select cm from CrewMemberEntity cm where cm.name = :name"),
+        @NamedQuery(name = CrewMemberEntity.CREW_MEMBER_NAMES, query = "select cm.name from CrewMemberEntity cm order by cm.name")
 })
 public class CrewMemberEntity {
+    public static final String CREW_MEMBER_BY_NAME = "crewMember.byName";
+    public static final String CREW_MEMBER_NAMES = "crewMember.names";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

@@ -10,8 +10,12 @@ import java.util.List;
 @Entity
 @Table(name = "mission", uniqueConstraints = {@UniqueConstraint(columnNames = {"mission_name"})})
 @NamedQueries({
+        @NamedQuery(name = MissionEntity.MISSION_BY_NAME, query = "select m from MissionEntity m where m.name = :name"),
+        @NamedQuery(name = MissionEntity.MISSION_NAMES, query = "select m.name from MissionEntity m order by m.name")
 })
 public class MissionEntity {
+    public static final String MISSION_BY_NAME = "mission.byName";
+    public static final String MISSION_NAMES = "mission.names";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

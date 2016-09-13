@@ -1,0 +1,17 @@
+[
+  {"name": "Apollo 1", "missionStart": "1967-02-11", "missionEnd": "1967-02-11"},
+  {"name": "Apollo 4", "missionStart": "1967-11-09", "missionEnd": "1967-11-09"},
+  {"name": "Apollo 5", "missionStart": "1968-01-22", "missionEnd": "1968-01-23"},
+  {"name": "Apollo 6", "missionStart": "1968-04-04", "missionEnd": "1968-04-04"},
+  {"name": "Apollo 7", "missionStart": "1968-10-11", "missionEnd": "1968-10-22"},
+  {"name": "Apollo 8", "missionStart": "1968-12-21", "missionEnd": "1968-12-27"},
+  {"name": "Apollo 9", "missionStart": "1969-03-03", "missionEnd": "1969-03-13"},
+  {"name": "Apollo 10", "missionStart": "1969-05-18", "missionEnd": "1969-05-26"},
+  {"name": "Apollo 11", "missionStart": "1969-07-16", "missionEnd": "1969-07-24"},
+  {"name": "Apollo 12", "missionStart": "1969-11-14", "missionEnd": "1969-11-24"},
+  {"name": "Apollo 13", "missionStart": "1970-04-11", "missionEnd": "1970-04-17"},
+  {"name": "Apollo 14", "missionStart": "1971-01-31", "missionEnd": "1971-02-09"},
+  {"name": "Apollo 15", "missionStart": "1971-07-26", "missionEnd": "1971-08-07"},
+  {"name": "Apollo 16", "missionStart": "1972-04-16", "missionEnd": "1972-04-27"},
+  {"name": "Apollo 17", "missionStart": "1972-12-07", "missionEnd": "1972-12-19"}
+]

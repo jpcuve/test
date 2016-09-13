@@ -1,0 +1,14 @@
+{
+  "Apollo 1":["Gus Grissom","Edward H. White","Roger B. Chaffee"],
+  "Apollo 7":["Wally Schirra","Walt Cunningham","Donn Eisele"],
+  "Apollo 8":["Frank Borman","James Lovell","William Anders"],
+  "Apollo 9":["James McDivitt","David Scott","Russell Schweickart"],
+  "Apollo 10":["Thomas Stafford","John Young","Eugene Cernan"],
+  "Apollo 11":["Neil Armstrong","Michael Collins","Buzz Aldrin"],
+  "Apollo 12":["C. Peter Conrad","Richard Gordon","Alan Bean"],
+  "Apollo 13":["James Lovell","Jack Swigert","Fred Haise"],
+  "Apollo 14":["Alan Shepard","Stuart Roosa","Edgar Mitchell"],
+  "Apollo 15":["David Scott","Alfred Worden","James Irwin"],
+  "Apollo 16":["John Young","T. Kenneth Mattingly","Charles Duke"],
+  "Apollo 17":["Eugene Cernan","Ronald Evans","Harrison Schmitt"]
+}
