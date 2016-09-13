@@ -1,6 +1,5 @@
 package com.messio.nasa;
 
-import javax.inject.Named;
 import javax.persistence.*;
 import java.util.List;
 
