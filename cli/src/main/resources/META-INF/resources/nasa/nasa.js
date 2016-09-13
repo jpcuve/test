@@ -3,16 +3,17 @@
  */
 /*global angular*/
 /*global $*/
-angular.module("nasa", ["ngResource"])
+angular.module("nasa", ["ngResource", "ngRoute"])
     .constant()
     .config(["$resourceProvider", function($resourceProvider){
         $resourceProvider.defaults.stripTrailingSlashes = false;
     }])
-    .directive("nasaMenu", ["$log", function($log){
-        return {
-            restrict: "E",
-            templateUrl: "template-menu.html"
-        }
+    .config(["$routeProvider", function($routeProvider){
+        $routeProvider
+            .when("/", { templateUrl: "view-home.html"})
+            .when("/missions", { templateUrl: "view-missions.html"})
+            .when("/crew-members", { templateUrl: "view-crew-members.html"})
+            .otherwise({ redirectTo: "/"})
     }])
     .controller("homeController", ["$scope", "$log", "$resource", "$interval", function($scope, $log, $resource, $interval){
         "use strict";

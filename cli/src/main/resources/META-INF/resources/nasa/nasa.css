@@ -1,0 +1,15 @@
+body {
+    color: black;
+    font-family: Arial, sans-serif;
+}
+
+.ui-icon.icon-fa {
+    background-image: none;
+    text-indent: 0;
+}
+
+.round-button {
+    width: 2em;
+    height: 2em;
+    border-radius: 100%;
+}
