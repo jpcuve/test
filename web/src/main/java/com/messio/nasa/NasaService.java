@@ -28,4 +28,16 @@ public class NasaService {
     public List<String> getCrewMemberNames(){
         return em.createNamedQuery(CrewMemberEntity.CREW_MEMBER_NAMES, String.class).getResultList();
     }
+
+    @GET
+    @Path("missions")
+    public List<MissionEntity> getMissions(){
+        return em.createQuery("select distinct m from MissionEntity m left join fetch m.crewMemberIds", MissionEntity.class).getResultList();
+    }
+
+    @GET
+    @Path("crew-members")
+    public List<CrewMemberEntity> getCrewMembers(){
+        return em.createQuery("select distinct cm from CrewMemberEntity cm left join fetch cm.missionIds", CrewMemberEntity.class).getResultList();
+    }
 }

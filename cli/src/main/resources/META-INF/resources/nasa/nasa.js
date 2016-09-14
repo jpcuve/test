@@ -15,11 +15,16 @@ angular.module("nasa", ["ngResource", "ngRoute"])
             .when("/crew-members", { templateUrl: "view-crew-members.html"})
             .otherwise({ redirectTo: "/"})
     }])
+    .factory("missionResource", ["$resource", function($resource){
+        return $resource("http://localhost:8080/test/api/missions/:id");
+    }])
     .controller("homeController", ["$scope", "$log", "$resource", "$interval", function($scope, $log, $resource, $interval){
         "use strict";
         $log.log("home controller");
-        var resource = $resource("http://localhost:8080/test-web-1.1/api/",{},{"get": { "url": "mission-names", "isArray" : true }});
-        $scope.missionNames = resource.get();
-
+    }])
+    .controller("missionsController", ["$scope", "$log", "missionResource", function($scope, $log, missionResource){
+        "use strict";
+        $log.log("missions controller");
+        $scope.missions = missionResource.query();
     }])
 ;

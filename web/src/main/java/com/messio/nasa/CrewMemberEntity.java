@@ -1,5 +1,7 @@
 package com.messio.nasa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,8 +25,14 @@ public class CrewMemberEntity {
     @Column(name = "member_name")
     private String name;
 
+    @ElementCollection
+    @CollectionTable(name = "mission_member", joinColumns = @JoinColumn(name = "member_fk"))
+    @Column(name = "mission_fk", insertable = false, updatable = false)
+    private List<Long> missionIds;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mission_member", joinColumns = @JoinColumn(name = "member_fk"), inverseJoinColumns = @JoinColumn(name = "mission_fk"))
+    @JsonIgnore
     private List<MissionEntity> missions;
 
     public Integer getId() {
@@ -41,6 +49,14 @@ public class CrewMemberEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Long> getMissionIds() {
+        return missionIds;
+    }
+
+    public void setMissionIds(List<Long> missionIds) {
+        this.missionIds = missionIds;
     }
 
     public List<MissionEntity> getMissions() {

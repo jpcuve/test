@@ -56,7 +56,6 @@ public class InitSingleton {
                 mission.setCrewMembers(missionCrewMembers);
                 facade.update(mission);
             }
-
         } catch(IOException e){
             LOGGER.severe(e.getMessage());
         }

@@ -1,5 +1,7 @@
 package com.messio.nasa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,8 +32,14 @@ public class MissionEntity {
     @Column(name = "mission_end_date")
     private LocalDate missionEnd;
 
+    @ElementCollection
+    @CollectionTable(name = "mission_member", joinColumns = @JoinColumn(name = "mission_fk"))
+    @Column(name = "member_fk", insertable = false, updatable = false)
+    private List<Long> crewMemberIds;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mission_member", joinColumns = @JoinColumn(name = "mission_fk"), inverseJoinColumns = @JoinColumn(name = "member_fk"))
+    @JsonIgnore
     private List<CrewMemberEntity> crewMembers;
 
     public Integer getId() {
@@ -64,6 +72,14 @@ public class MissionEntity {
 
     public void setMissionEnd(LocalDate missionEnd) {
         this.missionEnd = missionEnd;
+    }
+
+    public List<Long> getCrewMemberIds() {
+        return crewMemberIds;
+    }
+
+    public void setCrewMemberIds(List<Long> memberIds) {
+        this.crewMemberIds = memberIds;
     }
 
     public List<CrewMemberEntity> getCrewMembers() {
