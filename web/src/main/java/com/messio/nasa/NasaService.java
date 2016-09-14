@@ -20,7 +20,7 @@ public class NasaService {
     @GET
     @Path("missions")
     public List<MissionEntity> getMissions(){
-        return em.createQuery("select distinct m from MissionEntity m left join fetch m.crewMemberIds order by m.name", MissionEntity.class).getResultList();
+        return em.createQuery("select distinct m from MissionEntity m left join fetch m.crewMemberIds order by m.missionStart", MissionEntity.class).getResultList();
     }
 
     @GET

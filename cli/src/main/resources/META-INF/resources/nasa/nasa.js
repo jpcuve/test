@@ -25,10 +25,13 @@ angular.module("nasa", ["ngResource", "ngRoute"])
         "use strict";
         $log.log("home controller");
     }])
-    .controller("missionsController", ["$scope", "$log", "missionResource", function($scope, $log, missionResource){
+    .controller("missionsController", ["$log", "$scope", "missionResource", function($log, $scope, missionResource){
         "use strict";
-        $log.log("missions controller");
         $scope.missions = missionResource.query();
-        $scope.crewMembers = missionResource.query;
     }])
+    .controller("crewMembersController", ["$log", "$scope", "crewMemberResource", function($log, $scope, crewMemberResource){
+        "use strict";
+        $scope.crewMembers = crewMemberResource.query();
+    }])
+
 ;

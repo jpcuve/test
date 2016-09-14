@@ -1,4 +1,9 @@
 <span>Missions...</span>
 <div data-ng-controller="missionsController">
-    {{missions}}
+    <table>
+        <tr data-ng-repeat="mission in missions">
+            <td>{{mission.name}}</td>
+            <td>crew members...</td>
+        </tr>
+    </table>
 </div>
