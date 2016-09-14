@@ -18,6 +18,9 @@ angular.module("nasa", ["ngResource", "ngRoute"])
     .factory("missionResource", ["$resource", function($resource){
         return $resource("http://localhost:8080/test/api/missions/:id");
     }])
+    .factory("crewMemberResource", ["$resource", function($resource){
+        return $resource("http://localhost:8080/test/api/crew-members/:id");
+    }])
     .controller("homeController", ["$scope", "$log", "$resource", "$interval", function($scope, $log, $resource, $interval){
         "use strict";
         $log.log("home controller");
@@ -26,5 +29,6 @@ angular.module("nasa", ["ngResource", "ngRoute"])
         "use strict";
         $log.log("missions controller");
         $scope.missions = missionResource.query();
+        $scope.crewMembers = missionResource.query;
     }])
 ;
