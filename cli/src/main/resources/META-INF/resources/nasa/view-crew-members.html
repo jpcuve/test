@@ -3,7 +3,11 @@
     <table>
         <tr data-ng-repeat="crewMember in crewMembers">
             <td>{{crewMember.name}}</td>
-            <td>missions...</td>
+            <td>
+                <ul>
+                    <li data-ng-repeat="mission in crewMember.missions">{{mission.name}}</li>
+                </ul>
+            </td>
         </tr>
     </table>
 </div>

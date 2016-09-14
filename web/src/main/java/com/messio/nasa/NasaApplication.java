@@ -12,6 +12,6 @@ import java.util.Set;
 @ApplicationPath("/api")
 public class NasaApplication extends Application {
     public Set<Class<?>> getClasses(){
-        return new HashSet<>(Arrays.asList(NasaService.class));
+        return new HashSet<>(Arrays.asList(NasaService.class, CORSFilter.class));
     }
 }

@@ -4,7 +4,14 @@
 /*global angular*/
 /*global $*/
 angular.module("nasa", ["ngResource", "ngRoute"])
-    .constant()
+    .constant("constant", {
+        mapToIds: function(entityArray){
+            return entityArray.reduce(function(prevValue, currentValue){
+                prevValue[currentValue.id.toString()] = currentValue;
+                return prevValue;
+            }, {});
+        }
+    })
     .config(["$resourceProvider", function($resourceProvider){
         $resourceProvider.defaults.stripTrailingSlashes = false;
     }])
@@ -25,13 +32,31 @@ angular.module("nasa", ["ngResource", "ngRoute"])
         "use strict";
         $log.log("home controller");
     }])
-    .controller("missionsController", ["$log", "$scope", "missionResource", function($log, $scope, missionResource){
+    .controller("missionsController", ["$log", "$scope", "constant", "missionResource", "crewMemberResource", function($log, $scope, constant, missionResource, crewMemberResource){
         "use strict";
-        $scope.missions = missionResource.query();
+        $scope.missions = missionResource.query(function(missions){
+            crewMemberResource.query(function(crewMembers){
+                var map = constant.mapToIds(crewMembers);
+                angular.forEach(missions, function (mission) {
+                    mission.crewMembers = mission.crewMemberIds.map(function(id){
+                        return map[id.toString()];
+                    });
+                });
+            });
+        });
     }])
-    .controller("crewMembersController", ["$log", "$scope", "crewMemberResource", function($log, $scope, crewMemberResource){
+    .controller("crewMembersController", ["$log", "$scope", "constant", "crewMemberResource", "missionResource", function($log, $scope, constant, crewMemberResource, missionResource){
         "use strict";
-        $scope.crewMembers = crewMemberResource.query();
+        $scope.crewMembers = crewMemberResource.query(function(crewMembers){
+            missionResource.query(function(missions){
+                var map = constant.mapToIds(missions);
+                angular.forEach(crewMembers, function (crewMember) {
+                    crewMember.missions = crewMember.missionIds.map(function (id) {
+                        return map[id.toString()];
+                    })
+                })
+            })
+        });
     }])
 
 ;
