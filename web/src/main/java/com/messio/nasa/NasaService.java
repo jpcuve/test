@@ -24,6 +24,12 @@ public class NasaService {
     }
 
     @GET
+    @Path("missions/{id}")
+    public MissionEntity getMission(@PathParam("id") int id){
+        return em.createQuery("select distinct m from MissionEntity m left join fetch m.crewMemberIds where m.id = :id", MissionEntity.class).setParameter("id", id).getSingleResult();
+    }
+
+    @GET
     @Path("crew-members")
     public List<CrewMemberEntity> getCrewMembers(){
         return em.createQuery("select distinct cm from CrewMemberEntity cm left join fetch cm.missionIds order by cm.name", CrewMemberEntity.class).getResultList();

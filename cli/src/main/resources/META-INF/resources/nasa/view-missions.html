@@ -2,7 +2,9 @@
 <div data-ng-controller="missionsController">
     <table>
         <tr data-ng-repeat="mission in missions">
-            <td>{{mission.name}}</td>
+            <td>
+                <a href="#/missions/{{mission.id}}">{{mission.name}}</a>
+            </td>
             <td>
                 <ul>
                     <li data-ng-repeat="crewMember in mission.crewMembers">{{crewMember.name}}</li>

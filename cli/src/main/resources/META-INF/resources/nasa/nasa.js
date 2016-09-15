@@ -17,9 +17,10 @@ angular.module("nasa", ["ngResource", "ngRoute"])
     }])
     .config(["$routeProvider", function($routeProvider){
         $routeProvider
-            .when("/", { templateUrl: "view-home.html"})
+            .when("/missions/:id", { templateUrl: "view-mission.html"})
             .when("/missions", { templateUrl: "view-missions.html"})
             .when("/crew-members", { templateUrl: "view-crew-members.html"})
+            .when("/", { templateUrl: "view-home.html"})
             .otherwise({ redirectTo: "/"})
     }])
     .factory("endPoint", ["$log", "$location", function($log, $location){
@@ -37,9 +38,10 @@ angular.module("nasa", ["ngResource", "ngRoute"])
     .factory("crewMemberResource", ["$resource", "endPoint", function($resource, endPoint){
         return $resource(endPoint("/crew-members/:id"));
     }])
-    .controller("homeController", ["$scope", "$log", function($scope, $log){
+    .controller("missionController", ["$log", "$scope", "$routeParams", "missionResource", function($log, $scope, $routeParams, missionResource){
         "use strict";
-        $log.log("home controller");
+        $log.log("mission id", $routeParams.id);
+        $scope.mission = missionResource.get({id: $routeParams.id});
     }])
     .controller("missionsController", ["$log", "$scope", "constant", "missionResource", "crewMemberResource", function($log, $scope, constant, missionResource, crewMemberResource){
         "use strict";
@@ -66,6 +68,10 @@ angular.module("nasa", ["ngResource", "ngRoute"])
                 })
             })
         });
+    }])
+    .controller("homeController", ["$scope", "$log", function($scope, $log){
+        "use strict";
+        $log.log("home controller");
     }])
 
 ;
