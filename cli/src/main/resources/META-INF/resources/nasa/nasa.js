@@ -22,11 +22,20 @@ angular.module("nasa", ["ngResource", "ngRoute"])
             .when("/crew-members", { templateUrl: "view-crew-members.html"})
             .otherwise({ redirectTo: "/"})
     }])
-    .factory("missionResource", ["$resource", function($resource){
-        return $resource("http://localhost:8080/test/api/missions/:id");
+    .factory("endPoint", ["$log", "$location", function($log, $location){
+        return function(ep){
+            "use strict";
+            $log.log("protocol, host, port, absUrl, url", $location.protocol(), $location.host(), $location.port(), $location.absUrl(), $location.url());
+            var base = $location.port() >= 63342 ? ["http://", $location.host(), ":8080"] : [$location.protocol(), "://", $location.host(), ":", $location.port()];
+            base.push("/test/api", ep);
+            return base.join("");
+        }
     }])
-    .factory("crewMemberResource", ["$resource", function($resource){
-        return $resource("http://localhost:8080/test/api/crew-members/:id");
+    .factory("missionResource", ["$resource", "endPoint", function($resource, endPoint){
+        return $resource(endPoint("/missions/:id"));
+    }])
+    .factory("crewMemberResource", ["$resource", "endPoint", function($resource, endPoint){
+        return $resource(endPoint("/crew-members/:id"));
     }])
     .controller("homeController", ["$scope", "$log", "$resource", "$interval", function($scope, $log, $resource, $interval){
         "use strict";
