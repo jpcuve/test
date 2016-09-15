@@ -37,7 +37,7 @@ angular.module("nasa", ["ngResource", "ngRoute"])
     .factory("crewMemberResource", ["$resource", "endPoint", function($resource, endPoint){
         return $resource(endPoint("/crew-members/:id"));
     }])
-    .controller("homeController", ["$scope", "$log", "$resource", "$interval", function($scope, $log, $resource, $interval){
+    .controller("homeController", ["$scope", "$log", function($scope, $log){
         "use strict";
         $log.log("home controller");
     }])
