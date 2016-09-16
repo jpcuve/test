@@ -1,4 +1,16 @@
-<span>Mission...</span>
 <div data-ng-controller="missionController">
+    <span>Mission: {{mission.id}}</span>
+    <br/>
     {{mission}}
+    <form id="missionForm" name="missionForm" novalidate="">
+        <label>Name:</label>
+        <input type="text" data-ng-model="mission.name" data-ng-if="rw"/>
+        <span data-ng-if="!rw">{{mission.name}}</span>
+        <br/>
+        <input type="button" data-ng-click="edit()" data-ng-if="!rw" value="Edit"/>
+        <input type="button" data-ng-click="del()" data-ng-if="!rw" value="Delete"/>
+        <input type="button" data-ng-click="cancel()" data-ng-if="rw" value="Cancel"/>
+        <input type="button" data-ng-click="save()" data-ng-if="rw && missionForm.$dirty && missionForm.$valid" value="Save"/>
+    </form>
+    {{missionForm}}
 </div>

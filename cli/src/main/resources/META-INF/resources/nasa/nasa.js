@@ -26,29 +26,53 @@ angular.module("nasa", ["ngResource", "ngRoute"])
     .factory("endPoint", ["$log", "$location", function($log, $location){
         return function(ep){
             "use strict";
-            $log.log("protocol, host, port, absUrl, url", $location.protocol(), $location.host(), $location.port(), $location.absUrl(), $location.url());
             var base = $location.port() >= 63342 ? ["http://", $location.host(), ":8080"] : [$location.protocol(), "://", $location.host(), ":", $location.port()];
             base.push("/test/api", ep);
             return base.join("");
         }
     }])
-    .factory("missionResource", ["$resource", "endPoint", function($resource, endPoint){
-        return $resource(endPoint("/missions/:id"));
+    .factory("res", ["$resource", "endPoint", function($resource, endPoint){
+        return {
+            mission: $resource(endPoint("/missions/:id")),
+            crewMember: $resource(endPoint("/crew-members/:id"))
+        }
     }])
-    .factory("crewMemberResource", ["$resource", "endPoint", function($resource, endPoint){
-        return $resource(endPoint("/crew-members/:id"));
-    }])
-    .controller("missionController", ["$log", "$scope", "$routeParams", "missionResource", function($log, $scope, $routeParams, missionResource){
+    .controller("missionController", ["$log", "$scope", "$routeParams", "$location", "res", function($log, $scope, $routeParams, $location, res){
         "use strict";
-        $log.log("mission id", $routeParams.id);
-        $scope.mission = missionResource.get({id: $routeParams.id});
+        $log.log("mission controller", $routeParams.id);
+
+        $scope.del = function(){
+            res.mission.remove({id: $routeParams.id});
+            $scope.cancel();
+        };
+
+        $scope.load = function(){
+            $scope.mission = parseInt($routeParams.id) ? res.mission.get({id: $routeParams.id}) : {};
+        };
+
+        $scope.save = function(){
+            res.mission.save($scope.mission);
+            $scope.cancel();
+        };
+
+        $scope.edit = function(){
+            $scope.rw = true;
+        };
+
+        $scope.cancel = function(){
+            $location.path("/missions");
+        };
+
+        $scope.load();
     }])
-    .controller("missionsController", ["$log", "$scope", "constant", "missionResource", "crewMemberResource", function($log, $scope, constant, missionResource, crewMemberResource){
+    .controller("missionsController", ["$log", "$scope", "constant", "res", function($log, $scope, constant, res){
         "use strict";
-        $scope.missions = missionResource.query(function(missions){
-            crewMemberResource.query(function(crewMembers){
+        $log.log("missions controller");
+
+        $scope.missions = res.mission.query(function(missions){
+            res.crewMember.query(function(crewMembers){
                 var map = constant.mapToIds(crewMembers);
-                angular.forEach(missions, function (mission) {
+                missions.forEach(function (mission) {
                     mission.crewMembers = mission.crewMemberIds.map(function(id){
                         return map[id.toString()];
                     });
@@ -56,12 +80,12 @@ angular.module("nasa", ["ngResource", "ngRoute"])
             });
         });
     }])
-    .controller("crewMembersController", ["$log", "$scope", "constant", "crewMemberResource", "missionResource", function($log, $scope, constant, crewMemberResource, missionResource){
+    .controller("crewMembersController", ["$log", "$scope", "constant", "res", function($log, $scope, constant, res){
         "use strict";
-        $scope.crewMembers = crewMemberResource.query(function(crewMembers){
-            missionResource.query(function(missions){
+        $scope.crewMembers = res.crewMember.query(function(crewMembers){
+            res.mission.query(function(missions){
                 var map = constant.mapToIds(missions);
-                angular.forEach(crewMembers, function (crewMember) {
+                crewMembers.forEach(function (crewMember) {
                     crewMember.missions = crewMember.missionIds.map(function (id) {
                         return map[id.toString()];
                     })
