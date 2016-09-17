@@ -7,7 +7,7 @@ angular.module("nasa", ["ngResource", "ngRoute"])
     .constant("constant", {
         mapToIds: function(entityArray){
             return entityArray.reduce(function(prevValue, currentValue){
-                prevValue[currentValue.id.toString()] = currentValue;
+                prevValue[currentValue.id] = currentValue;
                 return prevValue;
             }, {});
         }
@@ -94,7 +94,7 @@ angular.module("nasa", ["ngResource", "ngRoute"])
                 var map = constant.mapToIds(crewMembers);
                 missions.forEach(function (mission) {
                     mission.crewMembers = mission.crewMemberIds.map(function(id){
-                        return map[id.toString()];
+                        return map[id];
                     });
                 });
             });
@@ -107,7 +107,7 @@ angular.module("nasa", ["ngResource", "ngRoute"])
                 var map = constant.mapToIds(missions);
                 crewMembers.forEach(function (crewMember) {
                     crewMember.missions = crewMember.missionIds.map(function (id) {
-                        return map[id.toString()];
+                        return map[id];
                     })
                 })
             })
