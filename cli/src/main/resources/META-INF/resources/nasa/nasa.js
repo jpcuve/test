@@ -65,12 +65,9 @@ angular.module("nasa", ["ngResource", "ngRoute"])
         };
 
         $scope.save = function(){
-            $scope.mission.crewMemberIds = [];
-            for (var k in $scope.temp.assignments){
-                if ($scope.temp.assignments.hasOwnProperty(k) && $scope.temp.assignments[k]){
-                    $scope.mission.crewMemberIds.push(k);
-                }
-            }
+            $scope.mission.crewMemberIds = Object.keys($scope.temp.assignments).filter(function(key){
+                return $scope.temp.assignments[key];
+            });
             $scope.mission.missionStart = $scope.temp.start && $scope.temp.start.toISOString().substr(0, 10);
             $scope.mission.missionEnd = $scope.temp.end && $scope.temp.end.toISOString().substr(0, 10);
             res.missionResource.save($scope.mission, function(){
