@@ -7,6 +7,23 @@
         <input type="text" data-ng-model="mission.name" data-ng-if="rw"/>
         <span data-ng-if="!rw">{{mission.name}}</span>
         <br/>
+        <label>Start:</label>
+        <input type="date" data-ng-model="temp.start" data-ng-if="rw"/>
+        <span data-ng-if="!rw">{{mission.missionStart}}</span>
+        <br/>
+        <label>End:</label>
+        <input type="date" data-ng-model="temp.end" data-ng-if="rw"/>
+        <span data-ng-if="!rw">{{mission.missionEnd}}</span>
+        <br/>
+        <label>Members:</label>
+        <span data-ng-repeat="crewMember in crewMembers">
+            <span style="margin-left: 2em;" data-ng-if="rw || temp.assignments[crewMember.id]">
+                <br/>
+                <input style="margin-left: 2em;" data-ng-model="temp.assignments[crewMember.id]" type="checkbox" data-ng-if="rw"/>
+                <span>{{crewMember.name}}</span>
+            </span>
+        </span>
+        <br/>
         <input type="button" data-ng-click="edit()" data-ng-if="!rw" value="Edit"/>
         <input type="button" data-ng-click="del()" data-ng-if="!rw" value="Delete"/>
         <input type="button" data-ng-click="cancel()" data-ng-if="rw" value="Cancel"/>

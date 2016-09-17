@@ -5,6 +5,8 @@
         <tr data-ng-repeat="mission in missions">
             <td>
                 <a href="#/missions/{{mission.id}}">{{mission.name}}</a>
+                <br/>
+                {{mission.missionStart}} to {{mission.missionEnd}}
             </td>
             <td>
                 <ul>

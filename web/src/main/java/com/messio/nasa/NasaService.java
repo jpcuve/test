@@ -24,6 +24,7 @@ public class NasaService {
     @GET
     @Path("missions")
     public List<MissionEntity> getMissions(){
+        LOGGER.info("Querying missions");
         List<MissionEntity> resultList = em.createQuery("select distinct m from MissionEntity m left join fetch m.crewMemberIds order by m.missionStart", MissionEntity.class).getResultList();
         return resultList;
     }
@@ -53,6 +54,7 @@ public class NasaService {
     @GET
     @Path("crew-members")
     public List<CrewMemberEntity> getCrewMembers(){
+        LOGGER.info("Querying crew members");
         return em.createQuery("select distinct cm from CrewMemberEntity cm left join fetch cm.missionIds order by cm.name", CrewMemberEntity.class).getResultList();
     }
 }
