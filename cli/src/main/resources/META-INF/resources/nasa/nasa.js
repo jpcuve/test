@@ -42,7 +42,12 @@ angular.module("nasa", ["ngResource", "ngRoute"])
         };
 
         $scope.load = function(){
-            if ($scope.rw = parseInt($routeParams.id)){
+            if ($scope.rw = (parseInt($routeParams.id) === 0)){
+                $scope.crewMember = {};
+                $scope.temp = {
+                    assignments: {}
+                };
+            } else {
                 $scope.crewMember = res.crewMemberResource.get({id: $routeParams.id}, function(m){
                     $scope.temp = {
                         assignments: (m.missionIds ? m.missionIds.reduce(function(acc, id){
@@ -51,11 +56,6 @@ angular.module("nasa", ["ngResource", "ngRoute"])
                         }, {}) : {})
                     };
                 });
-            } else {
-                $scope.crewMember = {};
-                $scope.temp = {
-                    assignments: {}
-                };
             }
             $scope.missions = res.missionResource.query();
         };
@@ -89,7 +89,12 @@ angular.module("nasa", ["ngResource", "ngRoute"])
         };
 
         $scope.load = function(){
-            if ($scope.rw = parseInt($routeParams.id)){
+            if ($scope.rw = (parseInt($routeParams.id) === 0)){
+                $scope.mission = {};
+                $scope.temp = {
+                    assignments: {}
+                };
+            } else {
                 $scope.mission = res.missionResource.get({id: $routeParams.id}, function(m){
                     $scope.temp = {
                         assignments: (m.crewMemberIds ? m.crewMemberIds.reduce(function(acc, id){
@@ -100,11 +105,6 @@ angular.module("nasa", ["ngResource", "ngRoute"])
                         end: m.missionEnd && new Date(m.missionEnd)
                     };
                 });
-            } else {
-                $scope.mission = {};
-                $scope.temp = {
-                    assignments: {}
-                };
             }
             $scope.crewMembers = res.crewMemberResource.query();
         };
