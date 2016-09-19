@@ -130,10 +130,8 @@ angular.module("nasa", ["ngResource", "ngRoute"])
 
         $scope.load();
     }])
-    .controller("missionsController", ["$log", "$scope", "constant", "res", function($log, $scope, constant, res){
+    .controller("missionsController", ["$log", "$scope", "res", function($log, $scope, res){
         "use strict";
-        $log.log("missions controller");
-
         $scope.missions = res.missionResource.query(function(missions){
             res.crewMemberResource.query(function(crewMembers){
                 var map = crewMembers.reduce(function(acc, crewMember){
@@ -148,7 +146,7 @@ angular.module("nasa", ["ngResource", "ngRoute"])
             });
         });
     }])
-    .controller("crewMembersController", ["$log", "$scope", "constant", "res", function($log, $scope, constant, res){
+    .controller("crewMembersController", ["$log", "$scope", "res", function($log, $scope, res){
         "use strict";
         $scope.crewMembers = res.crewMemberResource.query(function(crewMembers){
             res.missionResource.query(function(missions){
