@@ -5,12 +5,6 @@
 /*global $*/
 angular.module("nasa", ["ngResource", "ngRoute"])
     .constant("constant", {
-        mapToIds: function(entityArray){
-            return entityArray.reduce(function(prevValue, currentValue){
-                prevValue[currentValue.id] = currentValue;
-                return prevValue;
-            }, {});
-        }
     })
     .config(["$resourceProvider", function($resourceProvider){
         $resourceProvider.defaults.stripTrailingSlashes = false;
@@ -48,17 +42,21 @@ angular.module("nasa", ["ngResource", "ngRoute"])
         };
 
         $scope.load = function(){
-            $scope.rw = parseInt($routeParams.id) === 0;
-            $scope.temp = {
-                assignments: {}
-            };
-            $scope.crewMember = $scope.rw ? {} : res.crewMemberResource.get({id: $routeParams.id}, function(m){
-                if (m.missionIds){
-                    m.missionIds.forEach(function(id){
-                        $scope.temp.assignments[id] = true;
-                    });
-                }
-            });
+            if ($scope.rw = parseInt($routeParams.id)){
+                $scope.crewMember = res.crewMemberResource.get({id: $routeParams.id}, function(m){
+                    $scope.temp = {
+                        assignments: (m.missionIds ? m.missionIds.reduce(function(acc, id){
+                            acc[id] = true;
+                            return acc;
+                        }, {}) : {})
+                    };
+                });
+            } else {
+                $scope.crewMember = {};
+                $scope.temp = {
+                    assignments: {}
+                };
+            }
             $scope.missions = res.missionResource.query();
         };
 
@@ -83,7 +81,6 @@ angular.module("nasa", ["ngResource", "ngRoute"])
     }])
     .controller("missionController", ["$log", "$scope", "$routeParams", "$location", "res", function($log, $scope, $routeParams, $location, res){
         "use strict";
-        $log.log("mission controller", $routeParams.id);
 
         $scope.del = function(){
             res.missionResource.remove({id: $routeParams.id}, function () {
@@ -92,19 +89,23 @@ angular.module("nasa", ["ngResource", "ngRoute"])
         };
 
         $scope.load = function(){
-            $scope.temp = {
-                assignments: {}
-            };
-            $scope.rw = parseInt($routeParams.id) === 0;
-            $scope.mission = $scope.rw ? {} : res.missionResource.get({id: $routeParams.id}, function(m){
-                if (m.crewMemberIds){
-                    m.crewMemberIds.forEach(function(id){
-                        $scope.temp.assignments[id] = true;
-                    });
-                }
-                $scope.temp.start = m.missionStart && new Date(m.missionStart),
-                $scope.temp.end = m.missionEnd && new Date(m.missionEnd)
-            });
+            if ($scope.rw = parseInt($routeParams.id)){
+                $scope.mission = res.missionResource.get({id: $routeParams.id}, function(m){
+                    $scope.temp = {
+                        assignments: (m.crewMemberIds ? m.crewMemberIds.reduce(function(acc, id){
+                            acc[id] = true;
+                            return acc;
+                        }, {}) : {}),
+                        start: m.missionStart && new Date(m.missionStart),
+                        end: m.missionEnd && new Date(m.missionEnd)
+                    };
+                });
+            } else {
+                $scope.mission = {};
+                $scope.temp = {
+                    assignments: {}
+                };
+            }
             $scope.crewMembers = res.crewMemberResource.query();
         };
 
@@ -135,7 +136,10 @@ angular.module("nasa", ["ngResource", "ngRoute"])
 
         $scope.missions = res.missionResource.query(function(missions){
             res.crewMemberResource.query(function(crewMembers){
-                var map = constant.mapToIds(crewMembers);
+                var map = crewMembers.reduce(function(acc, crewMember){
+                    acc[crewMember.id] = crewMember;
+                    return acc;
+                }, {});
                 missions.forEach(function (mission) {
                     mission.crewMembers = mission.crewMemberIds.map(function(id){
                         return map[id];
@@ -148,7 +152,10 @@ angular.module("nasa", ["ngResource", "ngRoute"])
         "use strict";
         $scope.crewMembers = res.crewMemberResource.query(function(crewMembers){
             res.missionResource.query(function(missions){
-                var map = constant.mapToIds(missions);
+                var map = missions.reduce(function(acc, mission){
+                    acc[mission.id] = mission;
+                    return acc;
+                }, {});
                 crewMembers.forEach(function (crewMember) {
                     crewMember.missions = crewMember.missionIds.map(function (id) {
                         return map[id];
