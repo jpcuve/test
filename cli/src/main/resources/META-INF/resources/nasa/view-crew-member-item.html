@@ -1,0 +1,21 @@
+<div data-ng-controller="crewMemberController">
+    <form id="crewMemberForm" name="crewMemberForm" novalidate="">
+        <label>Name:</label>
+        <input type="text" data-ng-model="crewMember.name" data-ng-if="rw"/>
+        <span data-ng-if="!rw">{{crewMember.name}}</span>
+       <br/>
+        <label>Missions:</label>
+        <span data-ng-repeat="mission in missions">
+            <span style="margin-left: 2em;" data-ng-if="rw || temp.assignments[mission.id]">
+                <br/>
+                <input style="margin-left: 2em;" data-ng-model="temp.assignments[mission.id]" type="checkbox" data-ng-if="rw"/>
+                <span>{{mission.name}}</span>
+            </span>
+        </span>
+        <br/>
+        <input type="button" data-ng-click="edit()" data-ng-if="!rw" value="Edit"/>
+        <input type="button" data-ng-click="del()" data-ng-if="!rw" value="Delete"/>
+        <input type="button" data-ng-click="cancel()" data-ng-if="rw" value="Cancel"/>
+        <input type="button" data-ng-click="save()" data-ng-if="rw && crewMemberForm.$dirty && crewMemberForm.$valid" value="Save"/>
+    </form>
+</div>

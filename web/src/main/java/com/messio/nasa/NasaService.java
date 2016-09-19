@@ -47,7 +47,7 @@ public class NasaService {
 
     @DELETE
     @Path("missions/{id}")
-    public void delete(@PathParam("id") int id){
+    public void deleteMission(@PathParam("id") int id){
         em.remove(em.find(MissionEntity.class, id));
     }
 
@@ -57,4 +57,28 @@ public class NasaService {
         LOGGER.info("Querying crew members");
         return em.createQuery("select distinct cm from CrewMemberEntity cm left join fetch cm.missionIds order by cm.name", CrewMemberEntity.class).getResultList();
     }
+
+    @POST
+    @Path("crew-members")
+    public CrewMemberEntity saveCrewMember(CrewMemberEntity crewMember){
+        if (crewMember.getId() == null){
+            em.persist(crewMember);
+            return crewMember;
+        }
+        return em.merge(crewMember);
+    }
+
+    @GET
+    @Path("crew-members/{id}")
+    public CrewMemberEntity getCrewMember(@PathParam("id") int id){
+        return em.createQuery("select distinct cm from CrewMemberEntity cm left join fetch cm.missionIds where cm.id = :id", CrewMemberEntity.class).setParameter("id", id).getSingleResult();
+    }
+
+    @DELETE
+    @Path("crew-members/{id}")
+    public void deleteCrewMember(@PathParam("id") int id){
+        em.remove(em.find(CrewMemberEntity.class, id));
+    }
+
+
 }

@@ -17,9 +17,10 @@ angular.module("nasa", ["ngResource", "ngRoute"])
     }])
     .config(["$routeProvider", function($routeProvider){
         $routeProvider
-            .when("/missions/:id", { templateUrl: "view-mission.html"})
-            .when("/missions", { templateUrl: "view-missions.html"})
-            .when("/crew-members", { templateUrl: "view-crew-members.html"})
+            .when("/missions/:id", { templateUrl: "view-mission-item.html"})
+            .when("/crew-members/:id", { templateUrl: "view-crew-member-item.html"})
+            .when("/missions", { templateUrl: "view-mission-list.html"})
+            .when("/crew-members", { templateUrl: "view-crew-member-list.html"})
             .when("/", { templateUrl: "view-home.html"})
             .otherwise({ redirectTo: "/"})
     }])
@@ -37,6 +38,49 @@ angular.module("nasa", ["ngResource", "ngRoute"])
             crewMemberResource: $resource(endPoint("/crew-members/:id"))
         }
     }])
+    .controller("crewMemberController", ["$log", "$scope", "$routeParams", "$location", "res", function($log, $scope, $routeParams, $location, res){
+        "use strict";
+
+        $scope.del = function(){
+            res.crewMemberResource.remove({id: $routeParams.id}, function () {
+                $scope.cancel();
+            });
+        };
+
+        $scope.load = function(){
+            $scope.rw = parseInt($routeParams.id) === 0;
+            $scope.temp = {
+                assignments: {}
+            };
+            $scope.crewMember = $scope.rw ? {} : res.crewMemberResource.get({id: $routeParams.id}, function(m){
+                if (m.missionIds){
+                    m.missionIds.forEach(function(id){
+                        $scope.temp.assignments[id] = true;
+                    });
+                }
+            });
+            $scope.missions = res.missionResource.query();
+        };
+
+        $scope.save = function(){
+            $scope.crewMember.missionIds = Object.keys($scope.temp.assignments).filter(function(key){
+                return $scope.temp.assignments[key];
+            });
+            res.crewMemberResource.save($scope.crewMember, function(){
+                $scope.cancel();
+            });
+        };
+
+        $scope.edit = function(){
+            $scope.rw = true;
+        };
+
+        $scope.cancel = function(){
+            $location.url("/crew-members");
+        };
+
+        $scope.load();
+    }])
     .controller("missionController", ["$log", "$scope", "$routeParams", "$location", "res", function($log, $scope, $routeParams, $location, res){
         "use strict";
         $log.log("mission controller", $routeParams.id);
@@ -48,18 +92,18 @@ angular.module("nasa", ["ngResource", "ngRoute"])
         };
 
         $scope.load = function(){
+            $scope.temp = {
+                assignments: {}
+            };
             $scope.rw = parseInt($routeParams.id) === 0;
             $scope.mission = $scope.rw ? {} : res.missionResource.get({id: $routeParams.id}, function(m){
-                $scope.temp = {
-                    assignments: {},
-                    start: m.missionStart && new Date(m.missionStart),
-                    end: m.missionEnd && new Date(m.missionEnd)
-                };
                 if (m.crewMemberIds){
                     m.crewMemberIds.forEach(function(id){
                         $scope.temp.assignments[id] = true;
                     });
                 }
+                $scope.temp.start = m.missionStart && new Date(m.missionStart),
+                $scope.temp.end = m.missionEnd && new Date(m.missionEnd)
             });
             $scope.crewMembers = res.crewMemberResource.query();
         };

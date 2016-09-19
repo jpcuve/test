@@ -1,8 +1,11 @@
 <span>Crew members...</span>
 <div data-ng-controller="crewMembersController">
+    <a href="#/crew-members/0">New crew member</a>
     <table>
         <tr data-ng-repeat="crewMember in crewMembers">
-            <td>{{crewMember.name}}</td>
+            <td>
+                <a href="#/crew-members/{{crewMember.id}}">{{crewMember.name}}</a>
+            </td>
             <td>
                 <ul>
                     <li data-ng-repeat="mission in crewMember.missions">{{mission.name}}</li>

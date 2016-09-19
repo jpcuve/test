@@ -1,7 +1,4 @@
 <div data-ng-controller="missionController">
-    <span>Mission: {{mission.id}}</span>
-    <br/>
-    {{mission}}
     <form id="missionForm" name="missionForm" novalidate="">
         <label>Name:</label>
         <input type="text" data-ng-model="mission.name" data-ng-if="rw"/>
@@ -15,7 +12,7 @@
         <input type="date" data-ng-model="temp.end" data-ng-if="rw"/>
         <span data-ng-if="!rw">{{mission.missionEnd}}</span>
         <br/>
-        <label>Members:</label>
+        <label>Crew members:</label>
         <span data-ng-repeat="crewMember in crewMembers">
             <span style="margin-left: 2em;" data-ng-if="rw || temp.assignments[crewMember.id]">
                 <br/>
@@ -29,5 +26,4 @@
         <input type="button" data-ng-click="cancel()" data-ng-if="rw" value="Cancel"/>
         <input type="button" data-ng-click="save()" data-ng-if="rw && missionForm.$dirty && missionForm.$valid" value="Save"/>
     </form>
-    {{missionForm}}
 </div>
