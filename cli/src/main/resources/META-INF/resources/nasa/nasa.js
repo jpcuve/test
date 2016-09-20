@@ -158,7 +158,7 @@ angular.module("nasa", ["ngResource", "ngRoute"])
                     crewMember.missions = crewMember.missionIds.map(function (id) {
                         return map[id];
                     })
-                })
+                });
             })
         });
     }])
